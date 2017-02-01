@@ -1,11 +1,9 @@
 // ConsoleApplication2.cpp : Defines the entry point for the console application.
 //
-// Need to add HEX support, just output, input complete!!!
 //Almost done!
 //break for base <=1 o
 //add grand op loop
-//print decimal in right order
-//use more vectors
+//use dynamic data structures
 
 #include "stdafx.h"
 #include <string>
@@ -19,7 +17,6 @@ using namespace std;
 int main()
 {
 	vector<int> solution;
-	vector<int> sol2;
 	char chOut[1024];
 	char outHex = '0';
 	int base1;
@@ -31,10 +28,15 @@ int main()
 	bool negative = false;
 	bool decimal = false;
 	std::string inpt;
-	cout << "Input the base of the input: ";
+	cout << "Input the base of the input(2-36): ";
 	cin >> base1;
+	if (base1 < 2) {
+		cout << "input invalid" << endl;
+		system("pause");
+		return 0;
+	}
 	cout << endl;
-	cout << "Enter number to calculate(integers only right now): ";
+	cout << "Enter number to calculate(accepts negative, decimal, and digits 0-Z): ";
 	cin >> inpt;
 	cout << endl;
 	char ch[1024];
@@ -81,7 +83,7 @@ int main()
 		num[i] = (int)ch[i] - 48;
 		count++;
 	}
-	for (int i = 0; i < count; i++) {//strlen(ch) for count
+	for (int i = 0; i < count; i++) {
 		if (abs(num[i]) >= base1) {
 			cout << "invalid input: out of bounds of base: " <<num[i]<< endl;
 			system("pause");
@@ -93,6 +95,11 @@ int main()
 	/////////////////////////////CONVERSION/////////
 	cout << "enter the base to calculate to: ";
 	cin >> base2;
+	if (base1 < 2) {
+		cout << "input invalid" << endl;
+		system("pause");
+		return 0;
+	}
 	cout << endl;
 	count = 0;
 	while (sum>0){
@@ -114,7 +121,7 @@ int main()
 		}
 		dec[i] = (dec[i] * (1/pow(base1, i+1)));
 
-		cout <<"decimal: "<< dec[i] << endl;
+		//cout <<"decimal: "<< dec[i] << endl;
 		decSum += dec[i];
 		//cout << decSum << endl;
 	}
@@ -124,23 +131,14 @@ int main()
 	while (decSum>0) {
 		rem = 0;
 	decSum = decSum * base2;
-	cout << "decSum*base2: " << decSum << endl;
 		if (decSum >= 1) {
 			rem = trunc(decSum);
-			//cout << "dec mod: " << rem << endl;
 			decSum = decSum - rem;
-			//cout << "decSum - rem: " << decSum << endl;
 		}
-		//sol2.push_back(rem);
-
 		if (rem >= 10)
 			chOut[decCount] = (char)(rem + 55);
 		else
 			chOut[decCount] = char(rem + 48);
-
-
-
-		//cout << decSum << endl;
 		decCount++;
 	}
 	////////////////END DECIMAL/////////////////////////////
@@ -153,8 +151,6 @@ int main()
 	if (negative == true) {cout << "-";}
 
 	for (int i = 0; i < count; i++) {
-		//cout << solution.back()<< " ";
-		//solution.pop_back();
 		rem = solution.back();
 		if (rem >= 10)
 			outHex = (char)(rem + 55);
@@ -164,19 +160,9 @@ int main()
 		solution.pop_back();
 	}
 	if (decimal == true) { cout << ". "; }
-	/*for (int i = 0; i < decCount; i++) {
-		rem = sol2.back();
-		if (rem >= 10)
-			outHex = (char)(rem + 55);			
-		else
-			outHex = char(rem + 48);
-		cout<<outHex;
-		sol2.pop_back();
-	}*/
 	for (int i = 0; i < decCount; i++)
 		cout << chOut[i];
 	cout << endl;
 	system("pause");
     return 0;
 }
-
